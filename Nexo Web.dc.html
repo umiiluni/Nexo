@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Nexo Seguridad y Redes · Cruz del Eje</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/styles.css">
+  <script src="_ds/nexo-design-system-7a6f50a5-33fd-4571-9857-5e91fe2740de/_ds_bundle.js"></script>
+  <link rel="preload" as="image" href="assets/hero-poster.jpg">
+  <link rel="preload" as="image" href="assets/logo-n-nexo-400.png">
+  <script src="./image-slot.js"></script>
+  <style>
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:#0B0D12;font-family:"Inter",system-ui,sans-serif;overflow-x:hidden}
+    *{box-sizing:border-box}
+    @keyframes nxRingIn{0%{opacity:0;transform:scale(.9)}18%{opacity:1;transform:scale(1)}78%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.02)}}
+    @media (prefers-reduced-motion: reduce){[data-nx-ring]{animation:none!important;opacity:1!important}}
+    a{color:#0A2A6B;text-decoration:none}
+    a:hover{color:#1E7BFF}
+    button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(30,123,255,.45)}
+  </style>
+</helmet>
+
+<div id="nxProgress" aria-hidden="true" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:70;background:#1E7BFF;transform-origin:0 50%;transform:scaleX(0);pointer-events:none"></div>
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;background:#0A2A6B;border-bottom:1px solid rgba(255,255,255,.1)">
+  <div style="max-width:1200px;margin:0 auto;height:84px;padding:0 clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="#inicio" style="display:flex;align-items:center;gap:14px;color:#fff" onClick="{{ closeMenu }}">
+      <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Logo" src="assets/logo-n-nexo-400.png" variant="circle" size="{{ 60 }}" hint-size="60px,60px"></x-import>
+      <span style="display:flex;flex-direction:column;line-height:1.1">
+        <span style="font:800 24px/1 Montserrat,sans-serif;letter-spacing:.04em;color:#fff">NEXO</span>
+        <span style="font:600 11px/1.4 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.8)">Seguridad y Redes</span>
+      </span>
+    </a>
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;align-items:center;gap:32px">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+          <a href="{{ n.href }}" style="font:500 15px/1 Inter,sans-serif;color:rgba(255,255,255,.85);transition:color 160ms ease-out" style-hover="color:#fff">{{ n.label }}</a>
+        </sc-for>
+      </nav>
+      <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="onDark" size="sm" onClick="{{ toContact }}" hint-size="150px,40px">Pedir presupuesto</x-import>
+    </sc-if>
+    <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" aria-label="Abrir menú" style="width:44px;height:44px;border-radius:12px;border:1.5px solid rgba(255,255,255,.35);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer">
+        <span style="{{ bar1 }}"></span>
+        <span style="{{ bar2 }}"></span>
+        <span style="{{ bar3 }}"></span>
+      </button>
+    </sc-if>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#0A2A6B;border-top:1px solid rgba(255,255,255,.1);padding:12px clamp(20px,4vw,40px) 28px;display:flex;flex-direction:column;min-height:calc(100vh - 72px)">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ closeMenu }}" style="display:flex;align-items:center;justify-content:space-between;min-height:60px;border-bottom:1px solid rgba(255,255,255,.12);font:700 22px/1.2 Montserrat,sans-serif;color:#fff">
+          {{ n.label }}
+          <span style="width:20px;height:20px;background:rgba(255,255,255,.6);-webkit-mask:url(assets/icons/arrow-right.svg) center/contain no-repeat;mask:url(assets/icons/arrow-right.svg) center/contain no-repeat"></span>
+        </a>
+      </sc-for>
+      <div style="margin-top:28px;display:flex">
+        <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="onDark" size="lg" onClick="{{ toContact }}" dc-props="{{ fullProps }}" hint-size="100%,52px">Pedir presupuesto</x-import>
+      </div>
+    </div>
+  </sc-if>
+</header>
+
+<main>
+  <!-- 1 · HERO -->
+  <section id="inicio" style="position:relative;overflow:hidden;min-height:clamp(540px,76svh,700px);display:flex;flex-direction:column;justify-content:flex-end;background:#0A2A6B;color:#fff;padding:clamp(120px,16vw,168px) 0 clamp(32px,4vw,40px)">
+    <video ref="{{ heroVideoRef }}" src="assets/hero-video.mp4" poster="assets/hero-poster.jpg" disableremoteplayback="" autoplay="" muted="" loop="" playsinline="" preload="auto" style="{{ videoStyle }}"></video>
+    <div style="{{ veilStyle }}"></div>
+    <sc-if value="{{ showEditor }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:100px;right:clamp(12px,2vw,24px);z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+        <button onClick="{{ toggleVid }}" aria-label="Ajustar video" title="Ajustar video" style="width:44px;height:44px;border-radius:999px;border:1.5px solid rgba(255,255,255,.7);background:rgba(11,13,18,.55);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+        </button>
+        <sc-if value="{{ vidOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="width:min(280px,calc(100vw - 24px));background:#fff;color:#0B0D12;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(11,13,18,.28)">
+            <span style="font:600 11px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#0A2A6B">Ajustar video</span>
+            <sc-for list="{{ vidControls }}" as="c" hint-placeholder-count="4">
+              <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1.2 Inter,sans-serif">
+                <span style="display:flex;justify-content:space-between"><span>{{ c.label }}</span><span style="color:#4B5775">{{ c.shown }}</span></span>
+                <input type="range" min="{{ c.min }}" max="{{ c.max }}" value="{{ c.value }}" onInput="{{ c.onInput }}" style="width:100%;accent-color:#1E7BFF">
+              </label>
+            </sc-for>
+            <button onClick="{{ toggleFit }}" style="min-height:40px;border-radius:12px;border:0;background:#0A2A6B;color:#fff;font:600 13px/1.2 Inter,sans-serif;cursor:pointer;padding:8px 10px">{{ fitLabel }}</button>
+            <button onClick="{{ resetVid }}" style="min-height:40px;border-radius:12px;border:1.5px solid rgba(10,42,107,.2);background:none;color:#0A2A6B;font:600 14px/1 Inter,sans-serif;cursor:pointer">Restablecer</button>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+    {{ heroRings }}
+    {{ heroRings2 }}
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+      <div data-reveal="" style="display:flex;flex-direction:column;align-items:flex-start;gap:24px">
+        <span style="font:600 12px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.8);visibility:hidden">Seguridad · Conectividad · Cruz del Eje</span>
+        <h1 style="margin:0;font:800 clamp(40px,7vw,76px)/1.04 Montserrat,sans-serif;letter-spacing:-.02em;text-wrap:balance;visibility:hidden;max-width:860px">Cámaras e internet que te dan tranquilidad</h1>
+        <p aria-hidden="true" style="display:none;margin:0;max-width:560px;font:400 clamp(17px,2vw,19px)/1.55 Inter,sans-serif;text-wrap:pretty;visibility:hidden">Instalamos cámaras, antenas Starlink y redes WiFi en casas, comercios y empresas de la zona. Te asesoramos, instalamos y te dejamos todo andando.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(48px,8vw,96px);align-self:stretch;justify-content:flex-start">
+          <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="onDark" size="lg" icon="assets/icons/arrow-right.svg" onClick="{{ toContact }}" hint-size="210px,52px">Pedir presupuesto</x-import>
+          <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="secondary" size="lg" onClick="{{ toServices }}" dc-props="{{ ghostProps }}" hint-size="160px,52px">Ver servicios</x-import>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · COMERCIOS Y EMPRESAS -->
+  <section id="comercios" style="scroll-margin-top:84px;position:relative;overflow:hidden;background:#fff;color:#0B0D12;padding:clamp(72px,10vw,112px) 0">
+    {{ bizRings }}
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,72px);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div data-reveal="" style="display:flex;flex-direction:column;gap:16px">
+          <span style="font:600 12px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#1E7BFF">Cámaras de seguridad</span>
+          <h2 style="margin:0;font:800 clamp(32px,5vw,52px)/1.08 Montserrat,sans-serif;letter-spacing:-.015em;color:#0A2A6B;text-wrap:balance">Seguridad para cada lugar</h2>
+          <p style="margin:0;max-width:480px;font:400 17px/1.55 Inter,sans-serif;color:#4B5775;text-wrap:pretty">Instalamos cámaras en casas, comercios y empresas, en la ciudad o en lugares alejados, afuera o adentro. Armamos el sistema a la medida de tu lugar y lo dejás ver desde el celular.</p>
+        </div>
+        <div data-reveal="" style="display:flex;flex-direction:column">
+          <sc-for list="{{ biz }}" as="b" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid rgba(10,42,107,.14)">
+              <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="ok" size="{{ 32 }}" hint-size="32px,32px"></x-import>
+              <span style="font:500 17px/1.4 Inter,sans-serif">{{ b }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div data-reveal="" style="display:flex">
+          <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" size="lg" icon="assets/icons/arrow-right.svg" onClick="{{ toContactBiz }}" hint-size="260px,52px">Pedir presupuesto de cámaras</x-import>
+        </div>
+      </div>
+      <div data-reveal="" style="position:relative;aspect-ratio:3/4;width:100%;border-radius:28px;overflow:hidden;background:#163A83">
+        <image-slot id="comercio-camaras" shape="rect" src="assets/fotos/comercios-camaras-poste.webp" placeholder="FOTO · Cámaras instaladas"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · INTERNET Y REDES -->
+  <section id="internet" style="scroll-margin-top:84px;background:#0A2A6B;padding:clamp(72px,10vw,112px) 0">
+    <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+        <div data-reveal="" style="position:relative;overflow:hidden;grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));border-radius:28px;background:#0B0D12;color:#fff">
+          <div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:clamp(28px,4vw,48px)">
+            <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="starlink" tone="signal" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+                <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Pill" tone="onDark" hint-size="190px,30px">Alquiler para eventos</x-import>
+              </div>
+              <h3 style="margin:0;font:800 clamp(28px,4vw,40px)/1.1 Montserrat,sans-serif;letter-spacing:-.01em;text-wrap:balance">Alquilá Starlink para tu evento</h3>
+              <p style="margin:0;max-width:460px;font:400 17px/1.55 Inter,sans-serif;color:rgba(255,255,255,.82);text-wrap:pretty">Alquilamos Starlink para fiestas y todo tipo de eventos, aunque sea en el medio de la nada. Lo llevamos, lo instalamos y tenés internet para todos tus invitados.</p>
+            </div>
+            <div style="display:flex">
+              <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="onDark" icon="assets/icons/arrow-right.svg" onClick="{{ pickStarlink }}" hint-size="210px,46px">Consultar por el alquiler</x-import>
+            </div>
+          </div>
+          <div style="position:relative;min-height:320px;background:#161a24">
+            <image-slot id="antena-starlink" shape="rect" src="assets/fotos/internet-antena-starlink.webp" placeholder="FOTO · Antena Starlink instalada, cielo abierto"></image-slot>
+          </div>
+        </div>
+        <sc-for list="{{ nets }}" as="t" hint-placeholder-count="2">
+          <div data-reveal="" style="display:flex;flex-direction:column;gap:18px;padding:clamp(24px,3vw,36px);border-radius:28px;background:#EEF2F8;transition:transform 220ms ease-out" style-hover="transform:translateY(-4px)">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="{{ t.icon }}" size="{{ 52 }}" hint-size="52px,52px"></x-import>
+            <h3 style="margin:0;font:700 26px/1.2 Montserrat,sans-serif;color:#0A2A6B">{{ t.title }}</h3>
+            <p style="margin:0;font:400 16px/1.55 Inter,sans-serif;color:#4B5775;text-wrap:pretty;flex:1">{{ t.desc }}</p>
+            <button onClick="{{ t.onPick }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:0;min-height:44px;border:0;background:none;cursor:pointer;font:600 15px/1 Inter,sans-serif;color:#0A2A6B;transition:opacity 160ms ease-out" style-hover="opacity:.7">
+              {{ t.cta }}
+              <span style="width:16px;height:16px;background:#1E7BFF;-webkit-mask:url(assets/icons/arrow-right.svg) center/contain no-repeat;mask:url(assets/icons/arrow-right.svg) center/contain no-repeat"></span>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · CONTACTO -->
+  <section id="contacto" style="scroll-margin-top:84px;position:relative;overflow:hidden;background:#fff;color:#0B0D12;padding:clamp(72px,10vw,112px) 0">
+    {{ contactRings }}
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(32px,5vw,64px);align-items:start">
+      <div data-reveal="" style="display:flex;flex-direction:column;gap:24px">
+        <span style="font:600 12px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#1E7BFF">Presupuesto sin cargo</span>
+        <h2 style="margin:0;font:800 clamp(32px,5vw,52px)/1.08 Montserrat,sans-serif;letter-spacing:-.015em;color:#0A2A6B;text-wrap:balance">Contanos qué necesitás ver</h2>
+        <p style="margin:0;max-width:440px;font:400 17px/1.55 Inter,sans-serif;color:#4B5775;text-wrap:pretty">Completá el formulario o escribinos directo por WhatsApp. Te respondemos con un plan claro y el presupuesto.</p>
+        <a href="https://wa.me/5493549582085" target="_blank" rel="noopener" style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;min-height:52px;border-radius:12px;background:#0A2A6B;color:#fff;font:600 16px/1 Inter,sans-serif;transition:opacity 160ms ease-out" style-hover="opacity:.88">
+          <span style="width:20px;height:20px;background:#fff;-webkit-mask:url(assets/icons/message-circle.svg) center/contain no-repeat;mask:url(assets/icons/message-circle.svg) center/contain no-repeat"></span>
+          Escribinos por WhatsApp
+        </a>
+        <div style="display:flex;flex-direction:column;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid rgba(10,42,107,.14)">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="telefono" size="{{ 36 }}" hint-size="36px,36px"></x-import>
+            <a href="https://wa.me/5493549582085" target="_blank" rel="noopener" style="font:500 16px/1.3 Inter,sans-serif;color:#0B0D12">+54 9 3549 58-2085</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid rgba(10,42,107,.14)">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="mail" size="{{ 36 }}" hint-size="36px,36px"></x-import>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexoseguridadyredes@gmail.com&su=Consulta%20desde%20la%20web" target="_blank" rel="noopener" style="font:500 16px/1.3 Inter,sans-serif;color:#0B0D12">nexoseguridadyredes@gmail.com</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid rgba(10,42,107,.14)">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="ubicacion" size="{{ 36 }}" hint-size="36px,36px"></x-import>
+            <span style="font:500 16px/1.3 Inter,sans-serif">Cruz del Eje, Córdoba</span>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal="" style="background:#EEF2F8;color:#0B0D12;border-radius:28px;padding:clamp(22px,4vw,40px)">
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding:24px 0">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.ServiceIcon" name="ok" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+            <h3 style="margin:0;font:800 28px/1.15 Montserrat,sans-serif;color:#0A2A6B">¡Listo, {{ firstName }}! Recibimos tu consulta.</h3>
+            <p style="margin:0;font:400 16px/1.55 Inter,sans-serif;color:#4B5775">Te vamos a escribir al {{ form.telefono }} para coordinar. Si es urgente, mandanos un WhatsApp.</p>
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" variant="secondary" onClick="{{ resetForm }}" hint-size="180px,46px">Enviar otra consulta</x-import>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Input" label="Nombre" placeholder="¿Cómo te llamás?" autocomplete="name" value="{{ form.nombre }}" onChange="{{ onNombre }}" hint-size="100%,72px"></x-import>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+              <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Input" label="Teléfono" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 3549 …" value="{{ form.telefono }}" onChange="{{ onTelefono }}" hint-size="100%,72px"></x-import>
+              <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Input" label="Email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" value="{{ form.email }}" onChange="{{ onEmail }}" hint-size="100%,72px"></x-import>
+            </div>
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+              <fieldset style="border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+                <legend style="padding:0;margin-bottom:10px;font:600 11px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#0A2A6B">{{ g.label }}</legend>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+                    <button onClick="{{ o.onClick }}" aria-pressed="{{ o.on }}" style="{{ o.style }}">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+              </fieldset>
+            </sc-for>
+            <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Input" label="Contanos un poco más" multiline="{{ true }}" placeholder="Qué querés cuidar, dónde necesitás señal o la fecha de tu evento…" value="{{ form.mensaje }}" onChange="{{ onMensaje }}" hint-size="100%,140px"></x-import>
+            <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;font:500 14px/1.4 Inter,sans-serif;color:#0A2A6B;background:#E3EEFF;border-radius:12px;padding:12px 14px">Dejanos al menos tu nombre y un teléfono para poder responderte.</p>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Button" size="lg" icon="assets/icons/arrow-right.svg" onClick="{{ submit }}" dc-props="{{ fullProps }}" hint-size="100%,54px">Pedir presupuesto</x-import>
+              <a href="https://wa.me/5493549582085" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;border-radius:12px;border:1.5px solid #0A2A6B;color:#0A2A6B;font:600 16px/1 Inter,sans-serif;transition:opacity 160ms ease-out" style-hover="opacity:.75">
+                <span style="width:18px;height:18px;background:#0A2A6B;-webkit-mask:url(assets/icons/message-circle.svg) center/contain no-repeat;mask:url(assets/icons/message-circle.svg) center/contain no-repeat"></span>
+                Prefiero WhatsApp
+              </a>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+  <!-- 7 · NOSOTROS -->
+  <section id="nosotros" style="scroll-margin-top:84px;background:#0A2A6B;color:#fff;padding:clamp(72px,10vw,112px) 0">
+    <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:clamp(32px,5vw,56px)">
+      <div data-reveal="" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+        <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Pill" tone="onDark" hint-size="190px,30px">Empresa familiar · Desde 2024</x-import>
+        <h2 style="margin:0;max-width:820px;font:800 clamp(32px,5.5vw,60px)/1.06 Montserrat,sans-serif;letter-spacing:-.02em;text-wrap:balance">Somos una familia que trabaja en equipo</h2>
+      </div>
+      <div data-reveal="" style="position:relative;border-radius:28px;overflow:hidden;aspect-ratio:16/8;min-height:240px;background:#163A83">
+        <image-slot id="nosotros-equipo" shape="rect" src="assets/nosotros.webp" placeholder="FOTO · El equipo de Nexo trabajando"></image-slot>
+      </div>
+      <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(24px,4vw,56px)">
+        <p style="margin:0;font:400 17px/1.65 Inter,sans-serif;color:rgba(255,255,255,.9);text-wrap:pretty">Nexo nació en 2024 en Cruz del Eje, como un proyecto en familia. Empezamos con cámaras de seguridad y hoy también instalamos antenas Starlink y armamos redes WiFi con fibra óptica.</p>
+        <p style="margin:0;font:400 17px/1.65 Inter,sans-serif;color:rgba(255,255,255,.9);text-wrap:pretty">Trabajamos en equipo, con arneses y escaleras, en casas, comercios y empresas, en la ciudad o en lugares alejados. Te asesoramos, instalamos y te dejamos todo andando.</p>
+      </div>
+    </div>
+  </section>
+  <!-- 8 · PREGUNTAS -->
+  <section id="preguntas" style="scroll-margin-top:84px;background:#fff;padding:clamp(72px,10vw,112px) 0">
+    <div style="max-width:820px;margin:0 auto;padding:0 clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:clamp(32px,5vw,48px)">
+      <div data-reveal="" style="display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center">
+        <h2 style="margin:0;font:800 clamp(32px,5vw,52px)/1.08 Montserrat,sans-serif;letter-spacing:-.015em;color:#0A2A6B;text-wrap:balance">Lo que más nos preguntan</h2>
+      </div>
+      <div data-reveal="" style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="6">
+          <div style="background:#EEF2F8;border-radius:20px;border:1px solid rgba(10,42,107,.08);overflow:hidden">
+            <button onClick="{{ f.toggle }}" aria-expanded="{{ f.open }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;min-height:64px;border:0;background:none;cursor:pointer;text-align:left;font:700 17px/1.35 Montserrat,sans-serif;color:#0A2A6B">
+              {{ f.q }}
+              <span style="{{ f.iconBox }}">
+                <span style="position:absolute;width:12px;height:2px;border-radius:2px;background:currentColor"></span>
+                <span style="{{ f.iconV }}"></span>
+              </span>
+            </button>
+            <div style="{{ f.panel }}">
+              <div style="overflow:hidden">
+                <p style="margin:0;padding:0 22px 22px;font:400 16px/1.6 Inter,sans-serif;color:#4B5775;text-wrap:pretty">{{ f.a }}</p>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div data-reveal="" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px">
+        <p style="margin:0;max-width:400px;font:400 17px/1.55 Inter,sans-serif;color:#4B5775;text-wrap:pretty">¿Te quedó otra duda? Escribinos y te respondemos nosotros, no un bot.</p>
+        <a href="#contacto" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;font:600 15px/1 Inter,sans-serif;color:#0A2A6B">
+          Hacer una consulta
+          <span style="width:16px;height:16px;background:#1E7BFF;-webkit-mask:url(assets/icons/arrow-right.svg) center/contain no-repeat;mask:url(assets/icons/arrow-right.svg) center/contain no-repeat"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer style="background:#0B0D12;color:#fff;padding:clamp(36px,5vw,48px) 0 24px">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:28px">
+      <div style="display:flex;flex-direction:column;gap:12px;grid-column:span 1">
+        <x-import component-from-global-scope="NexoDesignSystem_7a6f50.Logo" src="assets/logo-n-nexo-400.png" variant="circle" size="{{ 88 }}" hint-size="88px,88px"></x-import>
+        <p style="margin:0;font:700 16px/1.35 Montserrat,sans-serif;max-width:220px">Tu casa conectada, tu negocio seguro.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:600 11px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.6)">Servicios</span>
+        <a href="#comercios" style="color:rgba(255,255,255,.86);font:400 15px/1.4 Inter,sans-serif" style-hover="color:#fff">Cámaras de seguridad</a>
+        <a href="#internet" style="color:rgba(255,255,255,.86);font:400 15px/1.4 Inter,sans-serif" style-hover="color:#fff">Antenas Starlink</a>
+        <a href="#internet" style="color:rgba(255,255,255,.86);font:400 15px/1.4 Inter,sans-serif" style-hover="color:#fff">Redes WiFi (Universo Net)</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:600 11px/1.2 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.6)">Contacto</span>
+        <a href="https://instagram.com/nexo_seguridad" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:#fff;font:500 15px/1.4 Inter,sans-serif" style-hover="opacity:.8">
+          <span style="width:18px;height:18px;background:#fff;-webkit-mask:url(assets/icons/instagram.svg) center/contain no-repeat;mask:url(assets/icons/instagram.svg) center/contain no-repeat"></span>
+          @nexo_seguridad
+        </a>
+        <span style="font:400 15px/1.4 Inter,sans-serif;color:rgba(255,255,255,.86)">Cruz del Eje, Córdoba</span>
+        <a href="https://wa.me/5493549582085" target="_blank" rel="noopener" style="color:#fff;font:500 15px/1.4 Inter,sans-serif">+54 9 3549 58-2085</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexoseguridadyredes@gmail.com&su=Consulta%20desde%20la%20web" target="_blank" rel="noopener" style="color:#fff;font:500 15px/1.4 Inter,sans-serif">nexoseguridadyredes@gmail.com</a>
+      </div>
+    </div>
+    <div style="margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font:400 13px/1.4 Inter,sans-serif;color:rgba(255,255,255,.6)">
+      <span>© Nexo Seguridad y Redes</span>
+      <span style="font:600 11px/1.4 Montserrat,sans-serif;letter-spacing:.24em;text-transform:uppercase">Seguridad y Redes</span>
+    </div>
+  </div>
+</footer>
+
+<sc-if value="{{ showFloat }}" hint-placeholder-val="{{ false }}">
+  <a href="https://wa.me/5493549582085" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed;right:clamp(16px,3vw,28px);bottom:clamp(16px,3vw,28px);z-index:40;width:58px;height:58px;border-radius:50%;background:#1E7BFF;display:flex;align-items:center;justify-content:center;border:2px solid #fff;transition:transform 160ms ease-out" style-hover="transform:scale(1.06)">
+    <span style="width:26px;height:26px;background:#fff;-webkit-mask:url(assets/icons/message-circle.svg) center/contain no-repeat;mask:url(assets/icons/message-circle.svg) center/contain no-repeat"></span>
+  </a>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;whatsappFlotante&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamiento&quot;},&quot;animaciones&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamiento&quot;},&quot;mostrarDato&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;editarVideo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Inicio&quot;}}">
+class Component extends DCLogic {
+  state = {
+    wide: typeof window === 'undefined' ? true : window.innerWidth >= 960,
+    vidOpen: false, vid: { x: 50, y: 50, zoom: 100, veil: 100, fit: 'contain' },
+    menuOpen: false, faq: 0, sent: false, error: false, scrolledPast: false,
+    form: { nombre: '', telefono: '', email: '', mensaje: '', tipo: '', servicios: [], camaras: '' }
+  };
+  componentDidMount() {
+    try { const s = JSON.parse(localStorage.getItem('nexo_hero_video_adj') || 'null'); if (s) this.setState({ vid: { ...this.state.vid, ...s } }); } catch (e) {}
+    this.onResize = () => {
+      const wide = window.innerWidth >= 960;
+      if (wide !== this.state.wide) this.setState({ wide, menuOpen: false });
+    };
+    this.onScroll = () => {
+      const bar = document.getElementById('nxProgress');
+      if (bar) { const max = document.documentElement.scrollHeight - window.innerHeight; bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')'; }
+      const p = window.scrollY > 500;
+      if (p !== this.state.scrolledPast) this.setState({ scrolledPast: p });
+    };
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    if (this.props.animaciones ?? true) setTimeout(() => this.setupReveal(), 60);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
+    this.io && this.io.disconnect();
+  }
+  setupReveal() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    const vh = window.innerHeight;
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const sibs = Array.from(el.parentElement.children).filter((c) => c.hasAttribute('data-reveal'));
+        const i = Math.max(0, sibs.indexOf(el));
+        el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        setTimeout(() => { el.style.willChange = 'auto'; }, 1400);
+        this.io.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const pic = !!el.querySelector('image-slot');
+      el.style.transition = 'opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1)';
+      el.style.willChange = 'opacity, transform';
+      if (r.top < vh * 0.9) { el.style.opacity = '0'; el.style.transform = 'translateY(24px)'; requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; })); return; }
+      el.style.opacity = '0';
+      el.style.transform = pic ? 'translateY(40px) scale(.94)' : 'translateY(44px)';
+      this.io.observe(el);
+    });
+  }
+  go(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  }
+  setForm(patch) { this.setState((s) => ({ form: { ...s.form, ...patch }, error: false })); }
+  pick(servicio, tipo) {
+    this.setState((s) => ({ menuOpen: false, form: { ...s.form, servicios: [servicio], ...(tipo ? { tipo } : {}) } }));
+    this.go('contacto');
+  }
+  chip(on) {
+    return {
+      minHeight: 44, padding: '10px 16px', borderRadius: 999, cursor: 'pointer',
+      font: '500 15px/1 Inter, sans-serif', transition: 'background 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out',
+      background: on ? '#0A2A6B' : '#fff', color: on ? '#fff' : '#0A2A6B',
+      border: '1.5px solid ' + (on ? '#0A2A6B' : 'rgba(10,42,107,.2)')
+    };
+  }
+  renderVals() {
+    const { wide, menuOpen, faq, form, sent, error } = this.state;
+    const bar = (t) => ({ display: 'block', width: 18, height: 2, borderRadius: 2, background: '#fff', transition: 'transform 200ms ease-out, opacity 200ms ease-out', transform: t, opacity: t === 'hide' ? 0 : 1 });
+    const services = [
+      ['camaras', 'Cámaras para el hogar', 'Mirá quién llega y cuidá tu casa aunque no estés.', 'Cámaras', 'Casa'],
+      ['camaras', 'Cámaras para comercios', 'Controlá la caja, la puerta y el salón en todo momento.', 'Cámaras', 'Comercio'],
+      ['camaras', 'Cámaras exteriores e interiores', 'Equipos para sol, lluvia y polvo afuera, y discretos adentro.', 'Cámaras'],
+      ['escudo', 'Grabación y almacenamiento', 'Todo queda guardado para revisarlo cuando lo necesites.', 'Cámaras'],
+      ['telefono', 'Ver tus cámaras desde el celular', 'Te dejamos la app configurada y te enseñamos a usarla.', 'Cámaras'],
+      ['starlink', 'Instalación de antenas Starlink', 'Internet por satélite, donde no llega el cable.', 'Starlink', 'Lugar alejado'],
+      ['starlink', 'Alquiler de Starlink para eventos', 'Alquilá internet para fiestas y más, aunque sea en el medio de la nada.', 'Starlink'],
+      ['wifi', 'Redes WiFi (Universo Net)', 'Señal pareja en toda la casa, del frente hasta el fondo.', 'WiFi']
+    ].map(([icon, title, desc, srv, tipo]) => ({ icon, title, desc, onPick: () => this.pick(srv, tipo) }));
+    const faqs = [
+      ['¿Qué sistema de cámaras me conviene?', 'Depende del lugar y de qué querés ver. Contanos si es una casa, un comercio, una empresa o un lugar alejado, y si lo querés afuera o adentro. Te proponemos la cantidad y el tipo de cámaras justo para tu caso, sin vender de más.'],
+      ['¿Puedo ver las cámaras desde el celular?', 'Sí. Te dejamos la aplicación instalada y configurada en tu teléfono, y te mostramos cómo mirar en vivo y revisar grabaciones.'],
+      ['¿Cómo se ven de noche?', 'Instalamos cámaras con visión nocturna, que siguen grabando aunque esté oscuro. Te contamos qué rinde mejor según la zona que quieras cubrir.'],
+      ['¿Cableadas o inalámbricas?', 'Las cableadas son más estables y no dependen del WiFi; las inalámbricas son más simples de instalar donde no se puede pasar cable. Muchas veces combinamos las dos.'],
+      ['¿Dónde se guardan las grabaciones?', 'En un grabador que queda en tu casa o negocio, y según el equipo también en una memoria dentro de la cámara. Vos decidís quién tiene acceso.'],
+      ['¿Venden las antenas Starlink?', 'No, la antena la comprás vos. Nosotros nos encargamos de la instalación y, si todavía no la compraste, te asesoramos para que elijas bien.'],
+      ['¿Starlink funciona en cualquier lugar?', 'Solo necesita cielo despejado sobre la antena, por eso sirve en lugares alejados donde no llega el cable. Elegimos el mejor lugar para fijarla y la dejamos funcionando.'],
+      ['¿Alquilan Starlink para eventos?', 'Sí. Alquilamos Starlink para fiestas y todo tipo de eventos, aunque sea en el medio de la nada. Escribinos con la fecha y el lugar y te pasamos el presupuesto.'],
+      ['¿Qué es Universo Net?', 'Es nuestro servicio de WiFi con internet por fibra óptica. Armamos la red para que la señal llegue pareja a todos los ambientes de tu casa o negocio.']
+    ].map(([q, a], i) => {
+      const open = faq === i;
+      return {
+        q, a, open,
+        toggle: () => this.setState({ faq: open ? -1 : i }),
+        panel: { display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows 320ms cubic-bezier(.2,.7,.2,1)' },
+        iconBox: { position: 'relative', flex: 'none', width: 32, height: 32, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', background: open ? '#0A2A6B' : '#EEF2F8', color: open ? '#fff' : '#0A2A6B', transition: 'background 200ms ease-out, color 200ms ease-out' },
+        iconV: { position: 'absolute', width: 2, height: 12, borderRadius: 2, background: 'currentColor', transition: 'transform 220ms ease-out', transform: open ? 'scaleY(0)' : 'none' }
+      };
+    });
+    const single = (key, label, opts) => ({
+      label, options: opts.map((o) => ({ label: o, on: form[key] === o, style: this.chip(form[key] === o), onClick: () => this.setForm({ [key]: form[key] === o ? '' : o }) }))
+    });
+    const srvOpts = ['Cámaras', 'Instalación de Starlink', 'Alquiler de Starlink', 'WiFi (Universo Net)'].map((o) => {
+      const on = form.servicios.includes(o);
+      return { label: o, on, style: this.chip(on), onClick: () => this.setForm({ servicios: on ? form.servicios.filter((x) => x !== o) : [...form.servicios, o] }) };
+    });
+    const groups = [
+      single('tipo', 'Tipo de lugar', ['Casa', 'Comercio', 'Empresa', 'Lugar alejado', 'Evento']),
+      { label: 'Servicio de interés', options: srvOpts }
+    ];
+    if (form.servicios.includes('Cámaras')) groups.push(single('camaras', 'Cantidad aproximada de cámaras', ['1–2', '3–4', '5–8', 'No sé']));
+    if (!this._rings) {
+      const E = React.createElement;
+      const mk = (S, pos, offset, light) => {
+        const ring = (k, s, col, w, d) => E('span', { key: k, 'data-nx-ring': '', style: { position: 'absolute', inset: (S - s) / 2, borderRadius: '50%', border: w + 'px solid ' + col, opacity: 0, animation: 'nxRingIn 3.6s cubic-bezier(.2,.7,.2,1) ' + (offset + d) + 's infinite' } });
+        return E('span', { 'aria-hidden': true, style: { position: 'absolute', width: S, height: S, pointerEvents: 'none', ...pos } },
+          ring('a', S * .48, light ? 'rgba(10,42,107,.10)' : 'rgba(255,255,255,.14)', 1.5, 0),
+          ring('b', S * .74, light ? 'rgba(10,42,107,.10)' : 'rgba(255,255,255,.14)', 1.5, .45),
+          ring('c', S, light ? 'rgba(30,123,255,.3)' : 'rgba(30,123,255,.5)', Math.max(2, S / 130), .9));
+      };
+      this._rings = {
+        heroRings: mk(640, { top: -220, right: -240 }, 0),
+        heroRings2: mk(380, { top: '38%', left: -210 }, .6),
+        bizRings: mk(560, { bottom: -260, left: -200 }, 0, true),
+        contactRings: mk(600, { top: -240, left: -260 }, 0, true)
+      };
+    }
+    if (!this._vidRef) this._vidRef = (v) => {
+      if (!v) return;
+      v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.onended = () => { v.currentTime = 0; const q = v.play(); if (q && q.catch) q.catch(() => {}); };
+      v.onpause = () => { if (!document.hidden && !v.ended) { const q = v.play(); if (q && q.catch) q.catch(() => {}); } };
+      v.muted = true; v.defaultMuted = true; v.volume = 0; v.setAttribute('muted', '');
+      v.onvolumechange = () => { if (!v.muted || v.volume) { v.muted = true; v.volume = 0; } };
+      const p = v.play(); if (p && p.catch) p.catch(() => {});
+    };
+    const vid = this.state.vid;
+    const setVid = (k, v) => { const n = { ...this.state.vid, [k]: v }; this.setState({ vid: n }); try { localStorage.setItem('nexo_hero_video_adj', JSON.stringify(n)); } catch (e) {} };
+    const vidControls = [['x', 'Posición horizontal', 0, 100, '%'], ['y', 'Posición vertical', 0, 100, '%'], ['zoom', 'Zoom', 50, 250, '%'], ['veil', 'Velo azul', 0, 100, '%']].map(([k, label, min, max, u]) => ({ label, min, max, value: vid[k], shown: vid[k] + u, onInput: (e) => setVid(k, Number(e.target.value)) }));
+    return {
+      showEditor: this.props.editarVideo ?? false,
+      vidOpen: this.state.vidOpen, vidControls,
+      fitLabel: vid.fit === 'contain' ? 'Mostrar completo · cambiar a rellenar' : 'Rellenando · cambiar a mostrar completo',
+      toggleFit: () => setVid('fit', vid.fit === 'contain' ? 'cover' : 'contain'),
+      toggleVid: () => this.setState((s) => ({ vidOpen: !s.vidOpen })),
+      resetVid: () => { const d = { x: 50, y: 50, zoom: 100, veil: 100, fit: 'contain' }; this.setState({ vid: d }); try { localStorage.setItem('nexo_hero_video_adj', JSON.stringify(d)); } catch (e) {} },
+      videoStyle: 'position:absolute;top:84px;left:0;width:100%;height:calc(100% - 84px);object-fit:' + (wide ? vid.fit : 'cover') + ';pointer-events:none;object-position:' + vid.x + '% ' + vid.y + '%;transform:scale(' + (wide ? vid.zoom : Math.max(vid.zoom, 100)) / 100 + ');transform-origin:' + vid.x + '% ' + vid.y + '%',
+      veilStyle: 'position:absolute;inset:0;pointer-events:none;opacity:' + vid.veil / 100 + ';background:linear-gradient(90deg,rgba(10,42,107,.88) 0%,rgba(10,42,107,.6) 55%,rgba(10,42,107,.35) 100%)',
+      heroVideoRef: this._vidRef,
+      ...this._rings,
+      wide, narrow: !wide, menuOpen: menuOpen && !wide,
+      nav: [['Cámaras', '#comercios'], ['Internet', '#internet'], ['Contacto', '#contacto'], ['Nosotros', '#nosotros'], ['Preguntas', '#preguntas']].map(([label, href]) => ({ label, href })),
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      bar1: bar(menuOpen ? 'translateY(7px) rotate(45deg)' : 'none'),
+      bar2: bar(menuOpen ? 'hide' : 'none'),
+      bar3: bar(menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none'),
+      fullProps: { style: { width: '100%', justifyContent: 'center' } },
+      ghostProps: { style: { color: '#fff', borderColor: 'rgba(255,255,255,.55)' } },
+      toContact: () => { this.setState({ menuOpen: false }); this.go('contacto'); },
+      toServices: () => this.go('comercios'),
+      toContactBiz: () => this.pick('Cámaras'),
+      pickStarlink: () => this.pick('Alquiler de Starlink', 'Evento'),
+      showStat: this.props.mostrarDato ?? true,
+      showFloat: (this.props.whatsappFlotante ?? true) && this.state.scrolledPast && !menuOpen,
+      services,
+      steps: [
+        ['01', 'Nos contás qué necesitás', 'Por WhatsApp, Instagram o el formulario.'],
+        ['02', 'Te pasamos el plan y el presupuesto', 'Te explicamos qué conviene instalar y cuánto sale, claro y por escrito.'],
+        ['03', 'Instalamos y te explicamos cómo usarlo', 'Dejamos todo prolijo y funcionando, y te enseñamos a manejarlo desde tu celular.']
+      ].map(([n, title, desc]) => ({ n, title, desc })),
+      biz: ['Casas y departamentos', 'Comercios y atención al público', 'Empresas, depósitos y zonas de carga', 'Lugares alejados, sin cable ni red', 'Exteriores: accesos, patios y perímetro', 'Interiores y vista de todas las cámaras en el celular'],
+      nets: [
+        { icon: 'starlink', title: 'Instalación de antenas Starlink', desc: 'Nosotros instalamos tu antena, no la vendemos. Si todavía no la compraste, te asesoramos para que elijas bien y la dejamos funcionando.', cta: 'Consultar por la instalación', onPick: () => this.pick('Instalación de Starlink') },
+        { icon: 'wifi', title: 'WiFi · Universo Net', desc: '¿Se corta el WiFi en el fondo? Internet por fibra óptica y una red armada para que la señal llegue pareja a todos los ambientes.', cta: 'Consultar por WiFi', onPick: () => this.pick('WiFi (Universo Net)') }
+      ],
+      faqs, groups, form, sent, notSent: !sent, hasError: error,
+      firstName: (form.nombre || '').trim().split(' ')[0],
+      onNombre: (e) => this.setForm({ nombre: e.target.value }),
+      onTelefono: (e) => this.setForm({ telefono: e.target.value }),
+      onEmail: (e) => this.setForm({ email: e.target.value }),
+      onMensaje: (e) => this.setForm({ mensaje: e.target.value }),
+      submit: () => {
+        if (!form.nombre.trim() || !form.telefono.trim()) return this.setState({ error: true });
+        const f = form;
+        const msg = ['Hola Nexo, les escribo desde la web.', 'Nombre: ' + f.nombre, 'Teléfono: ' + f.telefono, f.email && 'Email: ' + f.email, f.tipo && 'Tipo: ' + f.tipo, f.servicios.length && 'Servicios: ' + f.servicios.join(', '), f.camaras && 'Cámaras: ' + f.camaras, f.mensaje && 'Mensaje: ' + f.mensaje].filter(Boolean).join('\n');
+        try {
+          fetch('https://formsubmit.co/ajax/nexoseguridadyredes@gmail.com', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ _subject: 'Nueva consulta web · ' + f.nombre, _template: 'table', _captcha: 'false', Nombre: f.nombre, Teléfono: f.telefono, Email: f.email, Tipo: f.tipo, Servicios: f.servicios.join(', '), Cámaras: f.camaras, Mensaje: f.mensaje, _replyto: f.email || undefined })
+          }).catch(() => {});
+        } catch (e) {}
+        window.open('https://wa.me/5493549582085?text=' + encodeURIComponent(msg), '_blank');
+        this.setState({ sent: true, error: false });
+      },
+      resetForm: () => this.setState({ sent: false, form: { nombre: '', telefono: '', email: '', mensaje: '', tipo: '', servicios: [], camaras: '' } })
+    };
+  }
+}
+</script>
+</body>
+</html>

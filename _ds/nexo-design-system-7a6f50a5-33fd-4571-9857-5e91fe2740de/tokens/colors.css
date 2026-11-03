@@ -1,0 +1,8 @@
+:root{
+--nx-blue-deep:#0A2A6B;--nx-blue-signal:#1E7BFF;--nx-night:#0B0D12;--nx-white:#FFFFFF;--nx-fog:#EEF2F8;
+--nx-blue-deep-90:#163A83;--nx-blue-signal-tint:#E3EEFF;--nx-ink-muted:#4B5775;--nx-line:rgba(10,42,107,.12);
+--text-1:var(--nx-night);--text-2:var(--nx-ink-muted);--text-brand:var(--nx-blue-deep);--text-on-brand:var(--nx-white);--text-accent:var(--nx-blue-signal);
+--surface-page:var(--nx-white);--surface-soft:var(--nx-fog);--surface-brand:var(--nx-blue-deep);--surface-dark:var(--nx-night);--surface-card:var(--nx-white);
+--accent:var(--nx-blue-signal);--border-1:var(--nx-line);--focus-ring:0 0 0 3px rgba(30,123,255,.35);
+--ring-on-dark:rgba(30,123,255,.45);--ring-on-dark-soft:rgba(255,255,255,.12);--ring-on-light:rgba(10,42,107,.10);
+}
