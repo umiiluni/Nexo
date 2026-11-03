@@ -340,7 +340,7 @@
 class Component extends DCLogic {
   state = {
     wide: typeof window === 'undefined' ? true : window.innerWidth >= 960,
-    vidOpen: false, vid: { x: 50, y: 50, zoom: 100, veil: 100, fit: 'contain' },
+    vidOpen: false, vid: { x: 50, y: 50, zoom: 100, veil: 100, fit: 'cover' },
     menuOpen: false, faq: 0, sent: false, error: false, scrolledPast: false,
     form: { nombre: '', telefono: '', email: '', mensaje: '', tipo: '', servicios: [], camaras: '' }
   };
@@ -489,7 +489,7 @@ class Component extends DCLogic {
       fitLabel: vid.fit === 'contain' ? 'Mostrar completo · cambiar a rellenar' : 'Rellenando · cambiar a mostrar completo',
       toggleFit: () => setVid('fit', vid.fit === 'contain' ? 'cover' : 'contain'),
       toggleVid: () => this.setState((s) => ({ vidOpen: !s.vidOpen })),
-      resetVid: () => { const d = { x: 50, y: 50, zoom: 100, veil: 100, fit: 'contain' }; this.setState({ vid: d }); try { localStorage.setItem('nexo_hero_video_adj', JSON.stringify(d)); } catch (e) {} },
+      resetVid: () => { const d = { x: 50, y: 50, zoom: 100, veil: 100, fit: 'cover' }; this.setState({ vid: d }); try { localStorage.setItem('nexo_hero_video_adj', JSON.stringify(d)); } catch (e) {} },
       videoStyle: 'position:absolute;top:84px;left:0;width:100%;height:calc(100% - 84px);object-fit:' + (wide ? vid.fit : 'cover') + ';pointer-events:none;object-position:' + vid.x + '% ' + vid.y + '%;transform:scale(' + (wide ? vid.zoom : Math.max(vid.zoom, 100)) / 100 + ');transform-origin:' + vid.x + '% ' + vid.y + '%',
       veilStyle: 'position:absolute;inset:0;pointer-events:none;opacity:' + vid.veil / 100 + ';background:linear-gradient(90deg,rgba(10,42,107,.88) 0%,rgba(10,42,107,.6) 55%,rgba(10,42,107,.35) 100%)',
       heroVideoRef: this._vidRef,
