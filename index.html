@@ -20,8 +20,12 @@
   <link rel="preload" as="image" href="assets/logo-n-nexo-400.png">
   <script src="./image-slot.js"></script>
   <style>
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-    body{margin:0;background:#fff;color:#0B0D12;font-family:"Inter",system-ui,sans-serif;overflow-x:hidden}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;max-width:100%}
+    body{margin:0;background:#fff;color:#0B0D12;font-family:"Inter",system-ui,sans-serif;overflow-x:hidden;max-width:100%;position:relative;overscroll-behavior-x:none}
+    main,section,footer{max-width:100vw}
+    @supports (overflow:clip){html,body{overflow-x:clip}}
+    img,video,svg{max-width:100%}
+    @media (max-width:959px){[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}[data-nx-ring]{animation:none!important;opacity:.7!important}}
     *{box-sizing:border-box}
     @keyframes nxRingIn{0%{opacity:0;transform:scale(.9)}18%{opacity:1;transform:scale(1)}78%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.02)}}
     @media (prefers-reduced-motion: reduce){[data-nx-ring]{animation:none!important;opacity:1!important}}
@@ -358,7 +362,7 @@ class Component extends DCLogic {
     };
     window.addEventListener('resize', this.onResize);
     window.addEventListener('scroll', this.onScroll, { passive: true });
-    if (this.props.animaciones ?? true) setTimeout(() => this.setupReveal(), 60);
+    if ((this.props.animaciones ?? true) && window.innerWidth >= 960) setTimeout(() => this.setupReveal(), 60);
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
